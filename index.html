@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Product Inventory — Login Flow</title>
+  <style>
+    :root{--accent:#2b6cb0;--muted:#6b7280;--bg:#f7fafc}
+    *{box-sizing:border-box}
+    body{font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;margin:0;background:var(--bg);color:#111}
+    header,main,footer{display:none}
+    .login-page{display:flex;align-items:center;justify-content:center;height:100vh;background:#fff}
+    .login-card{background:#fff;border:1px solid #e6e9ef;border-radius:12px;padding:28px;width:340px;box-shadow:0 4px 12px rgba(0,0,0,0.05)}
+    .login-card h2{text-align:center;margin-bottom:20px;color:var(--accent)}
+    .row{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+    input{padding:10px;border-radius:8px;border:1px solid #e6e9ef}
+    .btn{padding:10px;border-radius:8px;border:0;cursor:pointer;width:100%;font-weight:600}
+    .btn.primary{background:var(--accent);color:#fff}
+    .muted{color:var(--muted);font-size:13px;text-align:center}
+    header{background:#fff;border-bottom:1px solid #e6e9ef;padding:12px 18px;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:40px;height:40px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#63b3ed);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+    nav{display:flex;gap:10px}
+    nav button{background:transparent;border:0;padding:8px 12px;border-radius:8px;cursor:pointer;color:var(--muted)}
+    nav button.active{color:var(--accent);background:rgba(43,108,176,0.08)}
+    main{display:flex;gap:20px;padding:20px}
+    .sidebar{width:220px;background:#fff;border-radius:10px;padding:14px;border:1px solid #eef2f7}
+    .side-menu{display:flex;flex-direction:column;gap:8px}
+    .side-menu button{padding:10px;border-radius:8px;border:0;background:transparent;cursor:pointer;color:#111;text-align:left}
+    .card{background:#fff;border-radius:10px;padding:16px;border:1px solid #eef2f7}
+    .content{flex:1}
+    h2{margin:0 0 12px 0}
+    .muted.small{font-size:14px}
+  </style>
+</head>
+<body>
+  <!-- LOGIN PAGE -->
+  <div class="login-page" id="loginPage">
+    <div class="login-card">
+      <h2>Login</h2>
+      <form id="loginForm">
+        <div class="row"><input id="username" placeholder="Username" required></div>
+        <div class="row"><input id="password" type="password" placeholder="Password" required></div>
+        <div class="row"><button type="submit" class="btn primary">Login</button></div>
+        <p class="muted">No backend — any username and password works.</p>
+      </form>
+    </div>
+  </div>
+
+  <!-- MAIN APP -->
+  <header>
+    <div class="brand">
+      <div class="logo">PI</div>
+      <div><div style="font-weight:600">Product Inventory</div><div class="muted small">Structure only</div></div>
+    </div>
+    <nav id="topNav">
+      <button data-target="home" class="active">Home</button>
+      <button data-target="records">Records</button>
+      <button data-target="add">Add</button>
+      <button data-target="settings">Settings</button>
+    </nav>
+  </header>
+
+  <main>
+    <aside class="sidebar card">
+      <div style="font-weight:600;margin-bottom:8px">Menu</div>
+      <div class="side-menu">
+        <button data-target="home">Home</button>
+        <button data-target="records">Records</button>
+        <button data-target="add">Add New</button>
+        <button data-target="edit">Edit / Update</button>
+        <button data-target="settings">Settings</button>
+      </div>
+    </aside>
+
+    <section class="content">
+      <div id="home" class="card view">
+        <h2>Welcome to Product Inventory</h2>
+        <p class="muted">You are now logged in. Navigate using the menu.</p>
+      </div>
+      <div id="records" class="card view" style="display:none">
+        <h2>Product Records</h2>
+        <p class="muted">Records table placeholder.</p>
+      </div>
+      <div id="add" class="card view" style="display:none">
+        <h2>Add Product</h2>
+        <p class="muted">Add form placeholder.</p>
+      </div>
+      <div id="edit" class="card view" style="display:none">
+        <h2>Edit / Update Product</h2>
+        <p class="muted">Edit form placeholder.</p>
+      </div>
+      <div id="settings" class="card view" style="display:none">
+        <h2>Settings</h2>
+        <p class="muted">Settings placeholder.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p class="muted small" style="padding:12px 20px">Product Inventory prototype — structure only.</p>
+  </footer>
+
+  <script>
+    // Login handler
+    const loginForm = document.getElementById('loginForm');
+    loginForm.addEventListener('submit', e => {
+      e.preventDefault();
+      document.getElementById('loginPage').style.display = 'none';
+      document.querySelector('header').style.display = 'flex';
+      document.querySelector('main').style.display = 'flex';
+      document.querySelector('footer').style.display = 'block';
+    });
+
+    // Navigation
+    const navButtons = document.querySelectorAll('[data-target]');
+    const views = document.querySelectorAll('.view');
+    function show(target){
+      views.forEach(v=>v.style.display = v.id === target ? '' : 'none');
+      document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active', b.dataset.target===target));
+      document.querySelectorAll('.side-menu button').forEach(b=>b.classList.toggle('active', b.dataset.target===target));
+    }
+    navButtons.forEach(b=>b.addEventListener('click',()=>show(b.dataset.target)));
+    show('home');
+  </script>
+</body>
+</html>
